@@ -1,4 +1,0 @@
-<?php
-session_write_close();
-include("Navigation.php");
-?>
