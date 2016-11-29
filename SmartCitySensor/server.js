@@ -52,19 +52,11 @@ app.post('/sensorlist', function (req, res) {
   //creation time -> current time
   req.body.creationTime = moment().tz("America/Los_Angeles").format("HH:mm");
   req.body.uptime = moment().tz("America/Los_Angeles").format("MM-DD-YYYY  HH:mm:ss");
-  req.body.duration = 0;
   
-	//get latitude and longitude from location
-	geocoder.geocode(req.body.location, function(err, resp) {
-		console.log(resp[0].latitude + " and " + resp[0].longitude);
-		req.body.latitude=resp[0].latitude;
-		req.body.longitude=resp[0].longitude;
-		
 		db.sensorlist.insert(req.body, function(err, doc) {
 			console.log("data entry done");
 			res.json(doc);
 		});
-	});
 });
 
 //delete sensor
@@ -194,7 +186,7 @@ app.get('/userlist/:name/:password', function (req, res) {
 	
 	for (i=0; i<docs.length; i++)
 	{
-		if(docs[i].username.toString() == req.params.name.toString() & docs[i].password.toString() == req.params.password.toString())
+		if((docs[i].username == req.params.name) && (docs[i].password  == req.params.password))
 		{
 			console.log('successful');
 			flag = "successful"
@@ -290,6 +282,44 @@ app.get('/userprofile/:name', function (req, res) {
 	}));
 });
 
+
+//geting lati. and longi.
+app.get('/getgeodata/:name', function (req, res) {
+	
+  console.log('I received a GET request');
+
+  db.sensorlist.find({"username":req.params.name},(function (err, docs) {
+	console.log(docs);
+	res.send(docs);
+
+	}));
+});
+
+//geting latitude. and longi.
+app.get('/getgeodata2/:name', function (req, res) {
+	
+  console.log('I received a GET request');
+
+  db.physicalsensorlist .find({"latitude":req.params.name},(function (err, docs) {
+	console.log(docs);
+	res.send(docs);
+
+	}));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.get('/getsensordata/:group/:type', function (req, res) {
 	
   console.log('I received a GET request');
@@ -302,5 +332,113 @@ app.get('/getsensordata/:group/:type', function (req, res) {
 });
 
 
+//insert physical sensor data -> admin
+app.post('/createphysicalsensorlist', function (req, res) {
+  console.log(req.body);
+  
+	//get latitude and longitude from location
+	geocoder.geocode(req.body.location, function(err, resp) {
+		console.log(resp[0].latitude + " and " + resp[0].longitude);
+		req.body.latitude=resp[0].latitude;
+		req.body.longitude=resp[0].longitude;
+		
+		db.physicalsensorlist.insert(req.body, function(err, doc) {
+			console.log("data entry done");
+			res.json(doc);
+		});
+	});
+});
+
+//list of physical sensors for admin
+app.get('/physicalsensorlist_admin/:admin', function (req, res) {
+	
+  console.log('I received a GET request');
+
+  db.physicalsensorlist.find({adminname: req.params.admin},(function (err, docs) {
+	console.log(docs);
+	res.send(docs);
+
+	}));
+});
+
+//get sensor group for dropdown list in add sensor -> user 
+app.get('/getsensorgroup/:type', function (req, res) {
+	
+  console.log('I received a GET request');
+
+  db.physicalsensorlist.find({type: req.params.type},(function (err, docs) {
+	console.log(docs);
+	res.send(docs);
+
+	}));
+});
+
+
+
+
+
+
+
+//get sensor group for dropdown list in add sensor -> user 
+app.get('/getsensorname/:group/:type', function (req, res) {
+	
+  console.log('I received a GET request');
+
+  db.physicalsensorlist.find({group: req.params.group, type: req.params.type},(function (err, docs) {
+	console.log(docs);
+	res.send(docs);
+
+	}));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(3000);
 console.log("Server running on port 3000");
+
+
+app.get('/getSensorCountPerUser/:name', function (req, res) {
+	  console.log('I received a GET request getSensorCountPerUser');
+		var name = req.params.name;
+	  db.sensorlist.count({"username" : name}, function (err, docs) {
+	    console.log(docs);
+	    res.json(docs);
+	  });
+	});
+
+
+	//get sensor count
+	app.get('/getSensorCount', function (req, res) {
+		
+	  console.log('I received a GET request');
+
+	  db.sensorlist.count({},(function (err, docs) {
+		console.log(docs);
+		res.json(docs);
+
+		}));
+	});
+
+	//get user count
+	app.get('/getUserCount', function (req, res) {
+		
+	  console.log('I received a GET request');
+
+	  db.userlist.count({},(function (err, docs) {
+		console.log(docs);
+		res.json(docs);
+
+		}));
+	});
+
+

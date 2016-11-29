@@ -6,46 +6,8 @@
   
 </head> 
 <body>
-  <div id="map" style="width: 1400px; height: 800px;"></div>
+<h2 align="left"> </h2>
 
-  <script type="text/javascript">
-    var locations = [
-      ['Bondi Beac', 37.307604, -121.568276, 4],
-      ['Coogee Beach', 37.307603, -121.368276, 5],
-      ['Cronulla Beach', 37.307602, -121.268276, 3],
-      ['Manly Beach', 37.307601, -121.168271, 2],
-      ['Maroubra Beach', 37.307600, -121.868276, 1]
-    ];
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: new google.maps.LatLng(37.307600, -121.868276),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-
-    var infowindow = new google.maps.InfoWindow();
-
-    var marker, i;
-
-    for (i = 0; i < locations.length; i++) {  
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(locations[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }
-	window.onload = function () {
-    if (! localStorage.justOnce) {
-        localStorage.setItem("justOnce", "true");
-        window.location.reload();
-    }
-}
-  </script>
+  <div id="map" style="width: 1400px; height: 700px;"></div>
 </body>
 </html>

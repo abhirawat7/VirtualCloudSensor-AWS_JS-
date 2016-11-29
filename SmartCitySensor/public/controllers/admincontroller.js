@@ -14,8 +14,18 @@ adminapp.config(function($routeProvider){
   })
   
   .when('/viewsensor',{
-    templateUrl : 'admin/viewsensor_admin.html',
+    templateUrl : 'admin/viewsensor_user.html',
     controller : 'ViewSensorCtrl'
+  })
+  
+  .when('/viewadminsensor',{
+    templateUrl : 'admin/viewsensor_admin.html',
+    controller : 'ViewAdminSensorCtrl'
+  })
+  
+  .when('/createsensor',{
+    templateUrl : 'admin/createsensor_admin.html',
+    controller : 'CreateSensorCtrl'
   })
   
   .when('/map',{
@@ -53,11 +63,18 @@ adminapp.controller('DashboardCtrl', ['$scope', '$http', '$rootScope', function(
     console.log("I got the data I requested");
     console.log(response);
 	
-	if(response.toString() == 'not exist'){
+    if(response == 'not exist'){
 		$rootScope.login_user="";
 	}
 	else{
-		$rootScope.login_user=response.toString();
+		$rootScope.login_user=response;
+		$http.get('/getSensorCountPerUser/'+$rootScope.login_user).success(function(response1) {
+		    console.log("I got the data I requested in getsensorCount");
+		    console.log(response1);
+			$scope.sensor_total = response1;
+			
+			
+		  });
 	}
 
   });
@@ -118,10 +135,72 @@ adminapp.controller('ViewSensorCtrl', ['$scope', '$http', function($scope, $http
 }]);
 
 //maps
-adminapp.controller('MapCtrl', ['$scope', '$http', function($scope, $http) {
-    console.log("Hello from MapCtrl");
+adminapp.controller('MapCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) { 
 	
+	console.log("Hello from MapController");
 
+
+	
+	
+	$http.get('/physicalsensorlist_admin/'+$rootScope.login_user).success(function(response) {
+		console.log("I got the data I requested"+$rootScope.login_user+"check");
+		
+		var locations=[[response[0].name.toString(),response[0].latitude,response[0].longitude]];
+		for(i=1;i<response.length;i++)
+		{
+			locations.push([response[i].name.toString(),response[i].latitude,response[i].longitude]);
+
+console.log(locations);	
+			
+		}
+		
+		
+		
+	
+	
+	
+/*
+	  var locations = [
+	      ['san jose',37.307604, -121.568276],
+	      ['Coogee Beach', 37.307603, -121.368276, 5],
+	      ['Cronulla Beach', 37.307602, -121.268276, 3],
+	      ['Manly Beach', 37.307601, -121.168271, 2],
+	      ['Maroubra Beach', 37.307600, -121.868276, 1]
+	    ];
+	*/
+	
+	
+			 var map = new google.maps.Map(document.getElementById('map'), {
+				   zoom: 10,
+				   center: new google.maps.LatLng(37.307600, -121.868276),
+				   mapTypeId: google.maps.MapTypeId.ROADMAP
+				 });
+
+				 var infowindow = new google.maps.InfoWindow();
+
+				 var marker, i;
+
+				 for (i = 0; i < locations.length; i++) {  
+				   marker = new google.maps.Marker({
+				     position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				     map: map
+				   });
+
+				   google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				     return function() {
+				       infowindow.setContent(locations[i][0]);
+				       infowindow.open(map, marker);
+				     }
+				   })(marker, i));
+				 }
+					window.onload = function () {
+				 if (! localStorage.justOnce) {
+				     localStorage.setItem("justOnce", "true");
+				     window.location.reload();
+				 }
+				}
+	
+	});
 }]);
 
 //view and edit profile
@@ -137,3 +216,41 @@ adminapp.controller('ProfileCtrl', ['$scope', '$http', '$rootScope', function($s
 	
 	
 }]);
+
+//create new sensor
+adminapp.controller('CreateSensorCtrl', ['$scope', '$http', '$rootScope', '$window', function($scope, $http, $rootScope, $window) {
+    console.log("Hello from CreateSensorCtrl");
+	
+  //createSensor() 
+  $scope.createSensor = function() {
+		  console.log($scope.sensor);
+		  $scope.sensor.adminname = $rootScope.login_user;
+		  
+		  if($scope.sensor.type == "Bus Sensor" || $scope.sensor.type == "Bus Stop Sensor"){
+			$scope.sensor.cost= "0.20";
+		  }
+		  else{
+			$scope.sensor.cost= "0.30";  
+		  }
+		  $http.post('/createphysicalsensorlist', $scope.sensor).success(function(response) {
+			console.log("done");
+			console.log(response);
+			$window.alert("Sensor added successfully .. !!")
+			$scope.sensor="";
+		  });
+	};
+}]);
+
+//view sensor
+adminapp.controller('ViewAdminSensorCtrl', ['$scope', '$http','$rootScope', function($scope, $http, $rootScope) {
+    console.log("Hello from ViewSensorCtrl");
+	
+		$http.get('/physicalsensorlist_admin/'+$rootScope.login_user).success(function(response) {
+		console.log("I got the data I requested");
+		
+		$scope.sensorlist = response;
+		
+		});
+
+}]);
+

@@ -7,7 +7,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                                <i class="fa fa-dashboard"></i>  <a href="#/">Dashboard</a>
                             </li>
                             <li class="active">
                                 <i class="fa fa-bus"></i> Request Sensor
@@ -21,52 +21,44 @@
 
                         <form role="form" onload="initialize()">
 
-                            <div class="form-group">
-                                <label>Sensor Name</label>
-                                <input class="form-control" placeholder="Enter Sensor Name" ng-model="sensor.name">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Sensor Group</label>
-                                <select class="form-control" ng-model="sensor.group">
-                                    <option selected>San Jose Group</option>
-                                    <option>Santa Clara Group</option>
-                                    <option>Fremont Group</option>
-                                    <option>Sunnyvale Group</option>
-                                    <option>Cupertino Group</option>
-                                </select>
-                            </div>
-							
 							<div class="form-group">
                                 <label>Sensor Type</label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="Bus Stop Sensor" ng-model="sensor.type" checked>Bus Stop Sensor
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="Bus Stop Sensor" ng-model="sensor.type" ng-click="getSensorGroup(sensor.type)" checked>Bus Stop Sensor
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="Bus Sensor" ng-model="sensor.type">Bus Sensor
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="Bus Sensor" ng-model="sensor.type" ng-click="getSensorGroup(sensor.type)">Bus Sensor
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Light rail Sensor" ng-model="sensor.type">Light rail Sensor
+                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Light rail Sensor" ng-model="sensor.type" ng-click="getSensorGroup(sensor.type)">Light rail Sensor
                                     </label>
                                 </div>
 								<div class="radio">
                                     <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Texi Sensor" ng-model="sensor.type">Taxi Sensor
+                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Texi Sensor" ng-model="sensor.type" ng-click="getSensorGroup(sensor.type)">Taxi Sensor
                                     </label>
                                 </div>
                             </div>
-							
-							<div class="form-group">
-                                <label>Sensor Location</label>
-                                <input class="form-control" placeholder="Enter Sensor Location With zipcode" ng-model="sensor.location">
-								
+		
+                            <div class="form-group">
+                                <label>Sensor Clustor</label>
+                                <select class="form-control" ng-model="sensor.group" ng-options="group for group in grouplist | unique: 'group'" ng-click="getSensorName(sensor.group,sensor.type)">
+                                    <option value="">---Please select Sensor Clustor---</option>
+                                </select>
                             </div>
 							
+							<div class="form-group">
+                                <label>Sensor Name</label>
+								<select class="form-control" ng-model="sensor.name" ng-options="name for name in namelist">
+                                    <option value="">---Please select Sensor Name---</option>
+                                </select>
+                            </div>
+					
                             <button type="submit" class="btn btn-info" ng-click="addSensor()">Submit </button>&nbsp;&nbsp;
                             <button type="reset" class="btn btn-warning">Reset </button>
                         </form>

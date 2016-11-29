@@ -2,6 +2,7 @@
 <html lang="en" ng-app="adminapp">
 
 <head>
+	<title> Mobile Cloud Sensor </title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,16 +65,25 @@
                         <a href="#/billing"><i class="fa fa-fw fa-calculator"></i> Billing</a>
                     </li>
                     <li>
-                        <a href="#map"><i class="fa fa-fw fa-map-marker""></i> Maps</a>
+                        <a href="#/map"><i class="fa fa-fw fa-map-marker""></i> Maps</a>
                     </li>
+                    
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-bus"></i> Sensor <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
+							<li>
+                                <a href="#/createsensor">Create Sensor</a>
+                            </li>
+							<li>
+                                <a href="#/viewadminsensor">View Sensor</a>
+                            </li>
                             <li>
-                                <a href="#/viewsensor">View Sensor</a>
+                                <a href="#/viewsensor">View User Sensor Details</a>
                             </li>
                         </ul>
                     </li>
+                
+                
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

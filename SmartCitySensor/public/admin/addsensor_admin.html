@@ -1,0 +1,76 @@
+
+<!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Add Sensor
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-bus"></i> Request Sensor
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+				
+				<div class="row">
+                    <div class="col-lg-12">
+
+                        <form role="form" onload="initialize()">
+
+                            <div class="form-group">
+                                <label>Sensor Name</label>
+                                <input class="form-control" placeholder="Enter Sensor Name" ng-model="sensor.name">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Sensor Group</label>
+                                <select class="form-control" ng-model="sensor.group">
+                                    <option selected>San Jose Group</option>
+                                    <option>Santa Clara Group</option>
+                                    <option>Fremont Group</option>
+                                    <option>Sunnyvale Group</option>
+                                    <option>Cupertino Group</option>
+                                </select>
+                            </div>
+							
+							<div class="form-group">
+                                <label>Sensor Type</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="Bus Stop Sensor" ng-model="sensor.type" checked>Bus Stop Sensor
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="Bus Sensor" ng-model="sensor.type">Bus Sensor
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Light rail Sensor" ng-model="sensor.type">Light rail Sensor
+                                    </label>
+                                </div>
+								<div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Texi Sensor" ng-model="sensor.type">Taxi Sensor
+                                    </label>
+                                </div>
+                            </div>
+							
+							<div class="form-group">
+                                <label>Sensor Location</label>
+                                <input class="form-control" placeholder="Enter Sensor Location With zipcode" ng-model="sensor.location">
+								
+                            </div>
+							
+                            <button type="submit" class="btn btn-info" ng-click="addSensor()">Submit </button>&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-warning">Reset </button>
+                        </form>
+                    </div>
+                </div>
+				
+    
